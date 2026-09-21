@@ -7,7 +7,8 @@ Learning vulkan + cpp
 
 ### Bookmark
 
-- [Bookmark](www.youtube.com/watch?v=ecMcXW6MSYU&list=PL8327DO66nu9qYVKLDmdLW_84-yE4auCR&index=5)
+- [Video](www.youtube.com/watch?v=ecMcXW6MSYU&list=PL8327DO66nu9qYVKLDmdLW_84-yE4auCR&index=5)
+- [Guide](https://vulkan-tutorial.com/Drawing_a_triangle/Setup/Validation_layers)
 
 ### Engine Code
 
