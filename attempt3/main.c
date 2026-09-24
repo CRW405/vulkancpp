@@ -19,8 +19,8 @@
 // Ask Vulkan, "Can you watch my code and point out mistakes?"
 // -----------------------------------------------------------------------------
 
-const bool enableValidationLayers = true;
-const char *validationLayers[] = {
+const bool  enableValidationLayers = true;
+const char *validationLayers[]     = {
 	"VK_LAYER_KHRONOS_validation"
 };
 
@@ -61,14 +61,14 @@ bool checkValidationLayerSupport() {
 
 typedef struct QueueFamilyIndices {
 	uint32_t graphicsFamily;
-	bool hasGraphicsFamily;
+	bool     hasGraphicsFamily;
 	uint32_t presentFamily;
-	bool hasPresentFamily;
+	bool     hasPresentFamily;
 } QueueFamilyIndices;
 
 QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device, VkSurfaceKHR surface) {
-	QueueFamilyIndices indices = { 0 };
-	uint32_t queueFamilyCount = 0;
+	QueueFamilyIndices indices          = { 0 };
+	uint32_t           queueFamilyCount = 0;
 	vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, NULL);
 
 	VkQueueFamilyProperties *queueFamilies = malloc(sizeof(VkQueueFamilyProperties) * queueFamilyCount);
@@ -76,14 +76,14 @@ QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device, VkSurfaceKHR surfa
 
 	for (uint32_t i = 0; i < queueFamilyCount; i++) {
 		if (queueFamilies[i].queueFlags & VK_QUEUE_GRAPHICS_BIT) {
-			indices.graphicsFamily = i;
+			indices.graphicsFamily    = i;
 			indices.hasGraphicsFamily = true;
 		}
 
 		VkBool32 presentSupport = false;
 		vkGetPhysicalDeviceSurfaceSupportKHR(device, i, surface, &presentSupport);
 		if (presentSupport) {
-			indices.presentFamily = i;
+			indices.presentFamily    = i;
 			indices.hasPresentFamily = true;
 		}
 
@@ -111,10 +111,10 @@ bool isDeviceSuitable(VkPhysicalDevice device, VkSurfaceKHR surface) {
 
 typedef struct SwapChainSupportDetails {
 	VkSurfaceCapabilitiesKHR capabilities;
-	uint32_t formatCount;
-	VkSurfaceFormatKHR *formats;
-	uint32_t presentModeCount;
-	VkPresentModeKHR *presentModes;
+	uint32_t                 formatCount;
+	VkSurfaceFormatKHR      *formats;
+	uint32_t                 presentModeCount;
+	VkPresentModeKHR        *presentModes;
 } SwapChainSupportDetails;
 
 SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device, VkSurfaceKHR surface) {
@@ -159,10 +159,10 @@ VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR *capabilities) {
 		return capabilities->currentExtent;
 	} else {
 		VkExtent2D actualExtent = { WINDOW_WIDTH, WINDOW_HEIGHT };
-		actualExtent.width = (actualExtent.width < capabilities->minImageExtent.width) ? capabilities->minImageExtent.width : actualExtent.width;
-		actualExtent.width = (actualExtent.width > capabilities->maxImageExtent.width) ? capabilities->maxImageExtent.width : actualExtent.width;
-		actualExtent.height = (actualExtent.height < capabilities->minImageExtent.height) ? capabilities->minImageExtent.height : actualExtent.height;
-		actualExtent.height = (actualExtent.height > capabilities->maxImageExtent.height) ? capabilities->maxImageExtent.height : actualExtent.height;
+		actualExtent.width      = (actualExtent.width < capabilities->minImageExtent.width) ? capabilities->minImageExtent.width : actualExtent.width;
+		actualExtent.width      = (actualExtent.width > capabilities->maxImageExtent.width) ? capabilities->maxImageExtent.width : actualExtent.width;
+		actualExtent.height     = (actualExtent.height < capabilities->minImageExtent.height) ? capabilities->minImageExtent.height : actualExtent.height;
+		actualExtent.height     = (actualExtent.height > capabilities->maxImageExtent.height) ? capabilities->maxImageExtent.height : actualExtent.height;
 		return actualExtent;
 	}
 }
@@ -213,25 +213,25 @@ int main() {
 	// Describe the application to Vulkan and request the extensions GLFW needs
 	// to connect Vulkan to the window system.
 	VkApplicationInfo appInfo = {
-		.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO,
-		.pApplicationName = "Hello World",
+		.sType              = VK_STRUCTURE_TYPE_APPLICATION_INFO,
+		.pApplicationName   = "Hello World",
 		.applicationVersion = VK_MAKE_VERSION(1, 0, 0),
-		.pEngineName = "No Engine",
-		.engineVersion = VK_MAKE_VERSION(1, 0, 0),
-		.apiVersion = VK_API_VERSION_1_0,
+		.pEngineName        = "No Engine",
+		.engineVersion      = VK_MAKE_VERSION(1, 0, 0),
+		.apiVersion         = VK_API_VERSION_1_0,
 	};
 
 	// Get the extensions GLFW needs to connect Vulkan to the window system.
-	uint32_t glfwExtensionCount = 0;
-	const char **glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
+	uint32_t             glfwExtensionCount = 0;
+	const char         **glfwExtensions     = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
 	VkInstanceCreateInfo instanceCreateInfo = {
-		.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
-		.pApplicationInfo = &appInfo,
-		.enabledExtensionCount = glfwExtensionCount,
+		.sType                   = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
+		.pApplicationInfo        = &appInfo,
+		.enabledExtensionCount   = glfwExtensionCount,
 		.ppEnabledExtensionNames = glfwExtensions,
 	};
 	if (enableValidationLayers) {
-		instanceCreateInfo.enabledLayerCount = sizeof(validationLayers) / sizeof(validationLayers[0]);
+		instanceCreateInfo.enabledLayerCount   = sizeof(validationLayers) / sizeof(validationLayers[0]);
 		instanceCreateInfo.ppEnabledLayerNames = validationLayers;
 	}
 
@@ -285,11 +285,11 @@ int main() {
 	QueueFamilyIndices indices = findQueueFamilies(physicalDevice, surface);
 
 	// Create a logical device and retrieve its graphics queue.
-	float queuePriority = 1.0f;
+	float                   queuePriority   = 1.0f;
 	VkDeviceQueueCreateInfo queueCreateInfo = {
-		.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
+		.sType            = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
 		.queueFamilyIndex = indices.graphicsFamily,
-		.queueCount = 1,
+		.queueCount       = 1,
 		.pQueuePriorities = &queuePriority,
 	};
 
@@ -300,10 +300,10 @@ int main() {
 	};
 
 	VkDeviceCreateInfo deviceCreateInfo = {
-		.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
-		.queueCreateInfoCount = 1,
-		.pQueueCreateInfos = &queueCreateInfo,
-		.enabledExtensionCount = 1,
+		.sType                   = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
+		.queueCreateInfoCount    = 1,
+		.pQueueCreateInfos       = &queueCreateInfo,
+		.enabledExtensionCount   = 1,
 		.ppEnabledExtensionNames = deviceExtensions,
 	};
 
@@ -329,9 +329,9 @@ int main() {
 
 	// Query the swapchain support details for the physical device and surface.
 	SwapChainSupportDetails swapchainSupport = querySwapChainSupport(physicalDevice, surface);
-	VkSurfaceFormatKHR surfaceFormat = chooseSwapSurfaceFormat(swapchainSupport.formats, swapchainSupport.formatCount);
-	VkPresentModeKHR presentMode = chooseSwapPresentMode(swapchainSupport.presentModes, swapchainSupport.presentModeCount);
-	VkExtent2D extent = chooseSwapExtent(&swapchainSupport.capabilities);
+	VkSurfaceFormatKHR      surfaceFormat    = chooseSwapSurfaceFormat(swapchainSupport.formats, swapchainSupport.formatCount);
+	VkPresentModeKHR        presentMode      = chooseSwapPresentMode(swapchainSupport.presentModes, swapchainSupport.presentModeCount);
+	VkExtent2D              extent           = chooseSwapExtent(&swapchainSupport.capabilities);
 
 	// Request one more image than the minimum so rendering and presentation can
 	// overlap, while respecting the device's maximum.
@@ -341,32 +341,32 @@ int main() {
 	}
 
 	VkSwapchainCreateInfoKHR swapchainCreateInfo = {
-		.sType = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR,
-		.surface = surface,
-		.minImageCount = swapchainImageCount,
-		.imageFormat = surfaceFormat.format,
-		.imageColorSpace = surfaceFormat.colorSpace,
-		.imageExtent = extent,
+		.sType            = VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR,
+		.surface          = surface,
+		.minImageCount    = swapchainImageCount,
+		.imageFormat      = surfaceFormat.format,
+		.imageColorSpace  = surfaceFormat.colorSpace,
+		.imageExtent      = extent,
 		.imageArrayLayers = 1,
-		.imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,
+		.imageUsage       = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,
 	};
 
 	// If the graphics and presentation queues are different, we need to specify that the images will be shared between them. Otherwise, we can use exclusive mode which is more efficient.
 	uint32_t queueFamilyIndices[] = { indices.graphicsFamily, indices.presentFamily };
 	if (indices.graphicsFamily != indices.presentFamily) {
-		swapchainCreateInfo.imageSharingMode = VK_SHARING_MODE_CONCURRENT;
+		swapchainCreateInfo.imageSharingMode      = VK_SHARING_MODE_CONCURRENT;
 		swapchainCreateInfo.queueFamilyIndexCount = 2;
-		swapchainCreateInfo.pQueueFamilyIndices = queueFamilyIndices;
+		swapchainCreateInfo.pQueueFamilyIndices   = queueFamilyIndices;
 	} else {
 		swapchainCreateInfo.imageSharingMode = VK_SHARING_MODE_EXCLUSIVE;
 	}
 
 	// finish setting up the swapchain create info struct
-	swapchainCreateInfo.preTransform = swapchainSupport.capabilities.currentTransform;
+	swapchainCreateInfo.preTransform   = swapchainSupport.capabilities.currentTransform;
 	swapchainCreateInfo.compositeAlpha = VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR;
-	swapchainCreateInfo.presentMode = presentMode;
-	swapchainCreateInfo.clipped = VK_TRUE;
-	swapchainCreateInfo.oldSwapchain = VK_NULL_HANDLE;
+	swapchainCreateInfo.presentMode    = presentMode;
+	swapchainCreateInfo.clipped        = VK_TRUE;
+	swapchainCreateInfo.oldSwapchain   = VK_NULL_HANDLE;
 
 	VkSwapchainKHR swapchain;
 	if (vkCreateSwapchainKHR(device, &swapchainCreateInfo, NULL, &swapchain) != VK_SUCCESS) {
@@ -387,19 +387,19 @@ int main() {
 	VkImageView *swapchainImageViews = malloc(sizeof(VkImageView) * swapchainImageCount);
 	for (uint32_t i = 0; i < swapchainImageCount; i++) {
 		VkImageViewCreateInfo imageViewCreateInfo = {
-			.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO,
-			.image = swapchainImages[i],
-			.viewType = VK_IMAGE_VIEW_TYPE_2D,
-			.format = swapchainImageFormat,
-			.components.r = VK_COMPONENT_SWIZZLE_IDENTITY,
-			.components.g = VK_COMPONENT_SWIZZLE_IDENTITY,
-			.components.b = VK_COMPONENT_SWIZZLE_IDENTITY,
-			.components.a = VK_COMPONENT_SWIZZLE_IDENTITY,
-			.subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT,
-			.subresourceRange.baseMipLevel = 0,
-			.subresourceRange.levelCount = 1,
+			.sType                           = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO,
+			.image                           = swapchainImages[i],
+			.viewType                        = VK_IMAGE_VIEW_TYPE_2D,
+			.format                          = swapchainImageFormat,
+			.components.r                    = VK_COMPONENT_SWIZZLE_IDENTITY,
+			.components.g                    = VK_COMPONENT_SWIZZLE_IDENTITY,
+			.components.b                    = VK_COMPONENT_SWIZZLE_IDENTITY,
+			.components.a                    = VK_COMPONENT_SWIZZLE_IDENTITY,
+			.subresourceRange.aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT,
+			.subresourceRange.baseMipLevel   = 0,
+			.subresourceRange.levelCount     = 1,
 			.subresourceRange.baseArrayLayer = 0,
-			.subresourceRange.layerCount = 1,
+			.subresourceRange.layerCount     = 1,
 		};
 
 		if (vkCreateImageView(device, &imageViewCreateInfo, NULL, &swapchainImageViews[i]) != VK_SUCCESS) {
@@ -421,34 +421,34 @@ int main() {
 
 	// The render pass describes the attachments and operations used for one draw. In this case, we have one color attachment that is cleared at the start of the render pass and stored at the end.
 	VkAttachmentDescription colorAttachment = {
-		.format = swapchainImageFormat,
-		.samples = VK_SAMPLE_COUNT_1_BIT,
-		.loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR,
-		.storeOp = VK_ATTACHMENT_STORE_OP_STORE,
-		.stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE,
+		.format         = swapchainImageFormat,
+		.samples        = VK_SAMPLE_COUNT_1_BIT,
+		.loadOp         = VK_ATTACHMENT_LOAD_OP_CLEAR,
+		.storeOp        = VK_ATTACHMENT_STORE_OP_STORE,
+		.stencilLoadOp  = VK_ATTACHMENT_LOAD_OP_DONT_CARE,
 		.stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE,
-		.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED,
-		.finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,
+		.initialLayout  = VK_IMAGE_LAYOUT_UNDEFINED,
+		.finalLayout    = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR,
 	};
 
 	VkAttachmentReference colorAttachmentRef = {
 		.attachment = 0,
-		.layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
+		.layout     = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL,
 	};
 
 	// The subpass describes the operations that will be performed on the attachments. In this case, we have one subpass that uses the color attachment.
 	VkSubpassDescription subpass = {
-		.pipelineBindPoint = VK_PIPELINE_BIND_POINT_GRAPHICS,
+		.pipelineBindPoint    = VK_PIPELINE_BIND_POINT_GRAPHICS,
 		.colorAttachmentCount = 1,
-		.pColorAttachments = &colorAttachmentRef,
+		.pColorAttachments    = &colorAttachmentRef,
 	};
 
 	VkRenderPassCreateInfo renderPassCreateInfo = {
-		.sType = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO,
+		.sType           = VK_STRUCTURE_TYPE_RENDER_PASS_CREATE_INFO,
 		.attachmentCount = 1,
-		.pAttachments = &colorAttachment,
-		.subpassCount = 1,
-		.pSubpasses = &subpass,
+		.pAttachments    = &colorAttachment,
+		.subpassCount    = 1,
+		.pSubpasses      = &subpass,
 	};
 
 	VkRenderPass renderPass;
@@ -463,13 +463,13 @@ int main() {
 		VkImageView attachments[] = { swapchainImageViews[i] };
 
 		VkFramebufferCreateInfo framebufferInfo = {
-			.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO,
-			.renderPass = renderPass,
+			.sType           = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO,
+			.renderPass      = renderPass,
 			.attachmentCount = 1,
-			.pAttachments = attachments,
-			.width = extent.width,
-			.height = extent.height,
-			.layers = 1,
+			.pAttachments    = attachments,
+			.width           = extent.width,
+			.height          = extent.height,
+			.layers          = 1,
 		};
 
 		if (vkCreateFramebuffer(device, &framebufferInfo, NULL, &swapchainFramebuffers[i]) != VK_SUCCESS) {
@@ -488,8 +488,8 @@ int main() {
 
 	// Create a command pool for allocating command buffers. A command pool is a collection of command buffers that can be reset and reused.
 	VkCommandPoolCreateInfo poolInfo = {
-		.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO,
-		.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT,
+		.sType            = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO,
+		.flags            = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT,
 		.queueFamilyIndex = indices.graphicsFamily,
 	};
 
@@ -500,9 +500,9 @@ int main() {
 	}
 
 	VkCommandBufferAllocateInfo allocInfo = {
-		.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO,
-		.commandPool = commandPool,
-		.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY,
+		.sType              = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO,
+		.commandPool        = commandPool,
+		.level              = VK_COMMAND_BUFFER_LEVEL_PRIMARY,
 		.commandBufferCount = 1,
 	};
 
@@ -514,12 +514,12 @@ int main() {
 	// The image-available semaphore gates rendering, the render-finished
 	// semaphores gate presentation for their corresponding swapchain images, and
 	// the fence keeps this frame in flight.
-	VkSemaphore imageAvailableSemaphore;
+	VkSemaphore  imageAvailableSemaphore;
 	VkSemaphore *renderFinishedSemaphores = malloc(sizeof(VkSemaphore) * swapchainImageCount);
-	VkFence inFlightFence;
+	VkFence      inFlightFence;
 
 	VkSemaphoreCreateInfo semaphoreInfo = { .sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO };
-	VkFenceCreateInfo fenceInfo = { .sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO, .flags = VK_FENCE_CREATE_SIGNALED_BIT };
+	VkFenceCreateInfo     fenceInfo     = { .sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO, .flags = VK_FENCE_CREATE_SIGNALED_BIT };
 
 	vkCreateSemaphore(device, &semaphoreInfo, NULL, &imageAvailableSemaphore);
 	for (uint32_t i = 0; i < swapchainImageCount; i++) {
@@ -564,15 +564,15 @@ int main() {
 		vkBeginCommandBuffer(commandBuffer, &beginInfo);
 
 		// Clear the framebuffer to a solid color.
-		VkClearValue clearColor = { { { 0.5f, 0.0f, 0.5f, 1.0f } } }; // rgba
+		VkClearValue          clearColor          = { { { 0.5f, 0.0f, 0.5f, 1.0f } } }; // rgba
 		VkRenderPassBeginInfo renderPassBeginInfo = {
-			.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO,
-			.renderPass = renderPass,
-			.framebuffer = swapchainFramebuffers[imageIndex],
+			.sType             = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO,
+			.renderPass        = renderPass,
+			.framebuffer       = swapchainFramebuffers[imageIndex],
 			.renderArea.offset = { 0, 0 },
 			.renderArea.extent = extent,
-			.clearValueCount = 1,
-			.pClearValues = &clearColor,
+			.clearValueCount   = 1,
+			.pClearValues      = &clearColor,
 		};
 
 		// Begin the render pass and record the commands to clear the framebuffer.
@@ -581,30 +581,30 @@ int main() {
 		vkEndCommandBuffer(commandBuffer);
 
 		// Submit the recorded work, then present the same swapchain image.
-		VkSubmitInfo submitInfo = { .sType = VK_STRUCTURE_TYPE_SUBMIT_INFO };
-		VkSemaphore waitSemaphores[] = { imageAvailableSemaphore };
-		VkPipelineStageFlags waitStages[] = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
-		submitInfo.waitSemaphoreCount = 1;
-		submitInfo.pWaitSemaphores = waitSemaphores;
-		submitInfo.pWaitDstStageMask = waitStages;
-		submitInfo.commandBufferCount = 1;
-		submitInfo.pCommandBuffers = &commandBuffer;
+		VkSubmitInfo         submitInfo       = { .sType = VK_STRUCTURE_TYPE_SUBMIT_INFO };
+		VkSemaphore          waitSemaphores[] = { imageAvailableSemaphore };
+		VkPipelineStageFlags waitStages[]     = { VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT };
+		submitInfo.waitSemaphoreCount         = 1;
+		submitInfo.pWaitSemaphores            = waitSemaphores;
+		submitInfo.pWaitDstStageMask          = waitStages;
+		submitInfo.commandBufferCount         = 1;
+		submitInfo.pCommandBuffers            = &commandBuffer;
 
 		// Signal the render-finished semaphore when the command buffer has finished executing.
-		VkSemaphore signalSemaphores[] = { renderFinishedSemaphores[imageIndex] };
+		VkSemaphore signalSemaphores[]  = { renderFinishedSemaphores[imageIndex] };
 		submitInfo.signalSemaphoreCount = 1;
-		submitInfo.pSignalSemaphores = signalSemaphores;
+		submitInfo.pSignalSemaphores    = signalSemaphores;
 
 		// Submit the command buffer to the graphics queue for execution. The fence will be signaled when the command buffer has finished executing.
 		vkQueueSubmit(graphicsQueue, 1, &submitInfo, inFlightFence);
 
 		VkPresentInfoKHR presentInfo = {
-			.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR,
+			.sType              = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR,
 			.waitSemaphoreCount = 1,
-			.pWaitSemaphores = signalSemaphores,
-			.swapchainCount = 1,
-			.pSwapchains = &swapchain,
-			.pImageIndices = &imageIndex,
+			.pWaitSemaphores    = signalSemaphores,
+			.swapchainCount     = 1,
+			.pSwapchains        = &swapchain,
+			.pImageIndices      = &imageIndex,
 		};
 
 		vkQueuePresentKHR(graphicsQueue, &presentInfo); // Present the image to the screen.
